@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, reverse
 from django.views import generic, View
+from django.http import HttpResponseRedirect
 from .models import Post
 from .forms import CommentForm
 
@@ -75,15 +76,4 @@ class PostLike(View):
         else:
             post.likes.add(request.user)
         
-
-        return render(
-            request,
-            'post_detail.html',
-            {
-                'post': post,
-                'comments': comments,
-                'commented': True,
-                'liked': liked,
-                'comment_form': CommentForm()
-            },
-        )
+        return HttpResponseRedirect(reverse('post_detail', args=[slug]))
